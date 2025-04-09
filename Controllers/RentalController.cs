@@ -2,6 +2,7 @@
 using CarRentalApi.Models;
 using CarRentalApi.Service.Abstract;
 using CarRentalApi.Service.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IResult = CarRentalApi.Core.Utilities.Results.IResult;
 namespace CarRentalApi.Controllers
@@ -30,18 +31,21 @@ namespace CarRentalApi.Controllers
         }
 
         [HttpPost("Add")]
+        [Authorize(Roles = "User")]
         public async Task<IResult> Add(Rental entity)
         {
             return await _rentalService.Add(entity);
         }
 
         [HttpPost("Update")]
+        [Authorize(Roles = "User")]
         public async Task<IResult> Update(Rental entity)
         {
             return await _rentalService.Update(entity);
         }
 
         [HttpPost("Delete")]
+        [Authorize(Roles = "User")]
         public async Task<IResult> Delete(Guid id)
         {
             return await _rentalService.Delete(id);
