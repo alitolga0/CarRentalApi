@@ -2,6 +2,7 @@
 using CarRentalApi.Models;
 using CarRentalApi.Service.Abstract;
 using CarRentalApi.Service.Concrete;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IResult = CarRentalApi.Core.Utilities.Results.IResult;
@@ -9,6 +10,7 @@ namespace CarRentalApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RentalController : ControllerBase
     {
         private readonly IRentalService _rentalService;
@@ -19,12 +21,14 @@ namespace CarRentalApi.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
         public IDataResult<List<Rental>> GetAll()
         {
             return _rentalService.GetAll();
         }
 
         [HttpGet("GetById")]
+        [Authorize]
         public IDataResult<Rental> GetById(Guid id)
         {
             return _rentalService.GetById(id);

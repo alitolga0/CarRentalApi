@@ -1,4 +1,4 @@
-﻿namespace CarRentalApi.Models
+﻿namespace CarRentalApi.Models.RequestModel
 {
     public class Login
     {
