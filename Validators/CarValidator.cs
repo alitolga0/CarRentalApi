@@ -7,7 +7,7 @@ namespace CarRentalApi.Validators
     {
         public CarValidator()
         {
-            RuleFor(x => x.LicenseLate)
+            RuleFor(x => x.LicensePlate)
                 .NotEmpty().WithMessage("Plaka zorunludur")
                 .EmailAddress().WithMessage("Geçerli bir plaka giriniz.");
         }
