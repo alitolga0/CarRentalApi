@@ -20,6 +20,12 @@ namespace CarRentalApi.Repository
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<User>()
+      .HasDiscriminator<string>("UserType")
+      .HasValue<Admin>("Admin")
+      .HasValue<Seller>("Seller")
+      .HasValue<Customer>("Customer");
+
             builder.Entity<Car>()
               .Property(x => x.LicenseLate).IsRequired(true);
 

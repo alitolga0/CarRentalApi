@@ -16,15 +16,17 @@ namespace CarRentalApi.Controllers
         private readonly IAuthService _authService;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         public AuthController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IAuthService authService)
+            IAuthService authService,
+            RoleManager<IdentityRole<Guid>> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authService = authService;
+            _roleManager = roleManager;
         }
 
         [HttpPost("register")]
@@ -44,6 +46,15 @@ namespace CarRentalApi.Controllers
                 return BadRequest(result.Errors);
             }
 
+           
+            if (string.IsNullOrEmpty(model.Role) || !await _roleManager.RoleExistsAsync(model.Role))
+            {
+                return BadRequest("Geçersiz rol.");
+            }
+
+            
+            await _userManager.AddToRoleAsync(user, model.Role);
+
             return Ok(new SuccessResult("Kayıt başarılı"));
         }
 
@@ -51,6 +62,7 @@ namespace CarRentalApi.Controllers
         public async Task<IActionResult> Login([FromBody] Login model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
+           
             if (user == null)
                 return Unauthorized("Kullanıcı bulunamadı");
 
