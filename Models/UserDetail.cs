@@ -1,10 +1,8 @@
 ﻿using CarRentalApi.Models;
 
-public class UserDetail : User
+public class UserDetail : BaseEntity
 {
-    public string AdminCode { get; set; }  
-    public List<string> Permissions { get; set; } 
-    public List<Car> CarsForRent { get; set; }  
-    public string CompanyName { get; set; }  
-    public List<Rental> Rentals { get; set; }  
+    public Guid UserId { get; set; }
+    public string Address { get; set; }
+    public User? User { get; set; }
 }

@@ -1,8 +1,9 @@
 ﻿namespace CarRentalApi.Models
 {
-    public class Seller : User
+    public class Seller : UserDetail
     {
-        public List<Car> CarsForRent { get; set; }
+        public long Vkn { get; set; }
         public string CompanyName { get; set; }
+        public List<Car>? Cars { get; set; }
     }
 }

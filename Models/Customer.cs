@@ -1,9 +1,10 @@
 ﻿namespace CarRentalApi.Models
 {
-    public class Customer : User
+    public class Customer : UserDetail
     {
-        public string Address { get; set; }
-        public ICollection<Rental> RentalHistory { get; set; }
-
+        public long Tckn { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public ICollection<Rental>? Rentals { get; set; }
     }
 }
