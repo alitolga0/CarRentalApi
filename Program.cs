@@ -9,6 +9,8 @@ using CarRentalApi.Service.Abstract;
 using CarRentalApi.Service.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Reflection;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +20,12 @@ builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IRentalService, RentalService>();
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<MainDbContext>(options =>
