@@ -1,7 +1,6 @@
-﻿using CarRentalApi.Core.Repository;
+﻿ using CarRentalApi.Core.Repository;
 using CarRentalApi.Core.Utilities.Results;
 using CarRentalApi.Models;
-using CarRentalApi.Repository;
 using CarRentalApi.Service.Abstract;
 using System.Linq.Expressions;
 using IResult = CarRentalApi.Core.Utilities.Results.IResult;
@@ -51,5 +50,11 @@ namespace CarRentalApi.Service.Concrete
             await _unitOfWork.SaveChangesAsync();
             return new SuccessResult("güncelleme işlemi başarılı");
         }
+        public IDataResult<List<Rental>> GetAllBeforeNow()
+        {
+            var data = _baseRepository.GetAll(r => r.StartDate < DateTime.Now).ToList();
+            return new SuccessDataResult<List<Rental>>(data, "Geçmişteki kiralama işlemleri başarıyla getirildi");
+        }
+  
     }
 }

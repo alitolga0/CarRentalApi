@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace CarRentalApi.Repository
 {
@@ -11,7 +12,7 @@ namespace CarRentalApi.Repository
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Rental> Rentals { get; set; }
-
+        public DbSet<Adress> Adresses { get; set; }
         public MainDbContext(DbContextOptions<MainDbContext> options) : base(options)
         {
         }
@@ -20,11 +21,17 @@ namespace CarRentalApi.Repository
         {
             base.OnModelCreating(builder);
 
+
             builder.Entity<UserDetail>()
               .ToTable("user_details")
               .HasOne(ud => ud.User)
               .WithOne(u => u.UserDetail)
               .HasForeignKey<UserDetail>(ud => ud.UserId);
+
+            builder.Entity<Adress>()
+                .HasOne(a => a.UserDetail)
+                .WithMany(ud => ud.Adresses)
+                .HasForeignKey(a => a.UserDetailId);
 
             builder.Entity<Seller>().ToTable("user_details")
                 .HasBaseType<UserDetail>()
