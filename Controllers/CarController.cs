@@ -23,6 +23,12 @@ namespace CarRentalApi.Controllers
             return _carService.GetAll();
         }
 
+        [HttpGet("GetAllById")]
+        public IDataResult<List<Car>> GetAll(Guid id)
+        {
+            return _carService.GetAll(x => x.Id==id);
+        }
+
         [HttpGet("GetById")]
         public IDataResult<Car> GetById(Guid id)
         {
@@ -30,7 +36,7 @@ namespace CarRentalApi.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize(Roles = "Seller")]
+       
         public async Task<IResult> Add(Car entity)
         {
             return await _carService.Add(entity);

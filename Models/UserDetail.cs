@@ -3,6 +3,8 @@
 public class UserDetail : BaseEntity
 {
     public Guid UserId { get; set; }
-    public string Address { get; set; }
+    public List<Adress>? Adresses { get; set; }
+    
     public User? User { get; set; }
+
 }

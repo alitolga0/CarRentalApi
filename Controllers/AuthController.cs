@@ -13,47 +13,49 @@ namespace CarRentalApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly ICustomerRegisterService _customerRegisterService;
+        private readonly ISellerRegisterService _sellerRegisterService;
         private readonly IAuthService _authService;
-        private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly UserManager<User> _userManager;
         public AuthController(
-            UserManager<User> userManager,
             SignInManager<User> signInManager,
+            UserManager<User> userManager, 
             IAuthService authService,
-            RoleManager<IdentityRole<Guid>> roleManager)
+            ICustomerRegisterService customerRegisterService,
+            ISellerRegisterService sellerRegisterService)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
+            _userManager = userManager;
             _authService = authService;
-            _roleManager = roleManager;
+            _customerRegisterService = customerRegisterService;
+            _sellerRegisterService = sellerRegisterService;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Register model)
+        [HttpPost("register/customer")]
+        public async Task<IActionResult> CustomerRegister([FromBody] Register register)
         {
-            var user = new User
-            {
-                UserName = model.UserName,
-                Email = model.Email
-            };
+            var result = await _customerRegisterService.Add(register);
 
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
+            if (result.Success)
             {
-                return BadRequest(result.Errors);
+                return Ok(result.Message);
             }
 
-           
-            if (string.IsNullOrEmpty(model.Role) || !await _roleManager.RoleExistsAsync(model.Role))
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("register/seller")]
+        public async Task<IActionResult> sellerRegister([FromBody] Register register)
+        {
+            var result = await _sellerRegisterService.Add(register);
+
+            if (result.Success)
             {
-                return BadRequest("Geçersiz rol.");
+                return Ok(result.Message);
             }
 
-            
-            await _userManager.AddToRoleAsync(user, model.Role);
-
-            return Ok(new SuccessResult("Kayıt başarılı"));
+             return BadRequest(result.Message);
         }
 
         [HttpPost("login")]

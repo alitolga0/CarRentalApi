@@ -1,4 +1,5 @@
 ﻿using CarRentalApi.Core.Repository;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarRentalApi.Models
 {
@@ -10,5 +11,6 @@ namespace CarRentalApi.Models
         public string FirstName { get; set; } 
         public string LastName { get; set; }
         public string Role { get; set; }
+   
     }
 }

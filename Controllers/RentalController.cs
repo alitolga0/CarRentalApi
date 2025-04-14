@@ -54,5 +54,12 @@ namespace CarRentalApi.Controllers
         {
             return await _rentalService.Delete(id);
         }
+
+        [HttpGet("GetAllBeforeNow")]
+        [Authorize(Roles = "Customer")]
+        public IDataResult<List<Rental>> GetAllBeforeNow()
+        {
+            return _rentalService.GetAllBeforeNow();
+        }
     }
 }
